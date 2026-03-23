@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `bank_db` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `bank_db`;
 -- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: bank_db
@@ -33,6 +35,15 @@ CREATE TABLE `account` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `account`
+--
+
+LOCK TABLES `account` WRITE;
+/*!40000 ALTER TABLE `account` DISABLE KEYS */;
+/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `card`
 --
 
@@ -55,6 +66,15 @@ CREATE TABLE `card` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `card`
+--
+
+LOCK TABLES `card` WRITE;
+/*!40000 ALTER TABLE `card` DISABLE KEYS */;
+/*!40000 ALTER TABLE `card` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `customers`
 --
 
@@ -68,6 +88,15 @@ CREATE TABLE `customers` (
   PRIMARY KEY (`idCustomers`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customers`
+--
+
+LOCK TABLES `customers` WRITE;
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `transaction`
@@ -87,6 +116,15 @@ CREATE TABLE `transaction` (
   CONSTRAINT `Card_Transaction` FOREIGN KEY (`idAccount`) REFERENCES `card` (`idAccount`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transaction`
+--
+
+LOCK TABLES `transaction` WRITE;
+/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -97,4 +135,4 @@ CREATE TABLE `transaction` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-20  9:51:58
+-- Dump completed on 2026-03-23  9:23:39
