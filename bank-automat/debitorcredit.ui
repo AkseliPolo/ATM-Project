@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>debitOrCredit</class>
+ <widget class="QMainWindow" name="debitOrCredit">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,17 +14,30 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="logInButton">
+   <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>120</y>
-      <width>321</width>
-      <height>231</height>
+      <x>30</x>
+      <y>280</y>
+      <width>281</width>
+      <height>151</height>
      </rect>
     </property>
     <property name="text">
-     <string>Log In</string>
+     <string>DEBIT</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>280</y>
+      <width>281</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CREDIT</string>
     </property>
    </widget>
   </widget>
@@ -37,12 +50,6 @@
      <height>17</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuATM">
-    <property name="title">
-     <string>ATM</string>
-    </property>
-   </widget>
-   <addaction name="menuATM"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>balance</class>
+ <widget class="QMainWindow" name="balance">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,17 +14,27 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="logInButton">
+   <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>120</y>
-      <width>321</width>
-      <height>231</height>
+      <x>300</x>
+      <y>200</y>
+      <width>121</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>200</y>
+      <width>61</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Log In</string>
+     <string>BALANCE</string>
     </property>
    </widget>
   </widget>
@@ -37,12 +47,6 @@
      <height>17</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuATM">
-    <property name="title">
-     <string>ATM</string>
-    </property>
-   </widget>
-   <addaction name="menuATM"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
