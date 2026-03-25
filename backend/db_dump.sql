@@ -25,10 +25,11 @@ DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account` (
-  `idAccount` int NOT NULL,
-  `idCustomer` int NOT NULL,
-  `balance` float DEFAULT NULL,
-  PRIMARY KEY (`idAccount`,`idCustomer`),
+  `idAccount` int NOT NULL AUTO_INCREMENT,
+  `idCustomer` int DEFAULT NULL,
+  `balance` decimal(10,2) DEFAULT NULL,
+  `credit_limit` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`idAccount`),
   KEY `CustomersAccount_idx` (`idCustomer`),
   CONSTRAINT `Customers_Account` FOREIGN KEY (`idCustomer`) REFERENCES `customers` (`idCustomers`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -51,15 +52,16 @@ DROP TABLE IF EXISTS `card`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `card` (
-  `idcard` int NOT NULL,
-  `idAccount` int NOT NULL,
+  `idcard` int NOT NULL AUTO_INCREMENT,
+  `idAccount` int DEFAULT NULL,
   `cardNumber` varchar(100) DEFAULT NULL,
-  `pin` varchar(100) DEFAULT NULL,
-  `credit_limit` float DEFAULT NULL,
-  `credit_used` float DEFAULT NULL,
+  `pin` varchar(255) DEFAULT NULL,
+  `credit_limit` decimal(10,2) DEFAULT NULL,
+  `credit_used` decimal(10,2) DEFAULT NULL,
   `expiry_date` date DEFAULT NULL,
   `card_type` enum('debit','credit') DEFAULT NULL,
-  PRIMARY KEY (`idcard`,`idAccount`),
+  PRIMARY KEY (`idcard`),
+  UNIQUE KEY `cardNumber_UNIQUE` (`cardNumber`),
   KEY `Account_Card_idx` (`idAccount`),
   CONSTRAINT `Account_Card` FOREIGN KEY (`idAccount`) REFERENCES `account` (`idAccount`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -82,11 +84,13 @@ DROP TABLE IF EXISTS `customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customers` (
-  `idCustomers` int NOT NULL,
+  `idCustomers` int NOT NULL AUTO_INCREMENT,
   `fname` varchar(20) DEFAULT NULL,
   `lname` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`idCustomers`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,14 +110,14 @@ DROP TABLE IF EXISTS `transaction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transaction` (
-  `idtransaction` int NOT NULL,
-  `idAccount` int NOT NULL,
-  `amount` float DEFAULT NULL,
+  `idtransaction` int NOT NULL AUTO_INCREMENT,
+  `idAccount` int DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
   `type` varchar(45) DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  PRIMARY KEY (`idtransaction`,`idAccount`),
-  KEY `Card_Transaction_idx` (`idAccount`),
-  CONSTRAINT `Card_Transaction` FOREIGN KEY (`idAccount`) REFERENCES `card` (`idAccount`) ON DELETE RESTRICT ON UPDATE CASCADE
+  `date` datetime DEFAULT NULL,
+  PRIMARY KEY (`idtransaction`),
+  KEY `Account_Transaction` (`idAccount`),
+  CONSTRAINT `Account_Transaction` FOREIGN KEY (`idAccount`) REFERENCES `account` (`idAccount`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -135,4 +139,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-23  9:23:39
+-- Dump completed on 2026-03-24 10:04:52

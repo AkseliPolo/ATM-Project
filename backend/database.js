@@ -1,6 +1,15 @@
-const mysql=require('mysql2');
-const connectionString='mysql::peppiuser:peppipass@127.0.0.1/bank_db';
+const mysql = require('mysql2');
 
-const connection=mysql.createPool(connectionString);
+// Luo yhteyspooli
+const db = mysql.createPool({
+  host: '127.0.0.1',       // tietokantapalvelin
+  user: 'peppiuser',        // oma käyttäjätunnuksesi
+  password: 'peppipass',    // oma salasana
+  database: 'bank_db',      // tietokanta
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
-module.exports=connection;
+// Käytetään promise-versiota async/await varten
+module.exports = db.promise();
