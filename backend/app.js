@@ -5,7 +5,7 @@ const db = require('./database'); // huolehdi että polku on oikein
 const app = express();
 app.use(bodyParser.json());
 
-// ========================== customers ========================== //
+//customers->
 
 app.post('/customers', async (request, response) => {
   const { fname, lname } = request.body;
@@ -29,15 +29,88 @@ app.get('/customers', async (request, response) => {
   }
 });
 
-app.get('/customers/:id', async (req, res) => {
+app.get('/customers/:id', async (request, response) => {
   try {
     const [rows] = await db.execute(
       'SELECT * FROM customers WHERE idCustomers = ?',
-      [req.params.id]
+      [request.params.id]
     );
-    res.json(rows[0]);
+    response.json(rows[0]);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    response.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/customers/:id', async (request, response) => {
+  try {
+    const [result] = await db.execute(
+      'DELETE FROM customers WHERE idCustomers = ?',
+      [request.params.id]
+    );
+    response.json(result);
+  } catch (err) {
+    response.status(500).json({ error: err.message });
+  }
+});
+
+//Accounts->
+
+app.post('/accounts', async (request, response) => {
+  const { idCustomer, balance, credit_limit } = request.body;
+
+  try {
+    const [result] = await db.execute(
+      'INSERT INTO account (idCustomer, balance, credit_limit) VALUES (?, ?, ?)',
+      [idCustomer, balance ?? 0, credit_limit ?? 0]
+    );
+    response.json({ id: result.insertId });
+  } catch (err) {
+    response.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/accounts', async (request, response) => {
+  try {
+    const [rows] = await db.execute('SELECT * FROM account');
+    response.json(rows);
+  } catch (err) {
+    response.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/accounts/:id', async (request, response) => {
+  try {
+    const [rows] = await db.execute(
+      'SELECT * FROM account WHERE idAccount = ?',
+      [request.params.id]
+    );
+    response.json(rows[0]);
+  } catch (err) {
+    response.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/customers/:id/accounts', async (request, response) => {
+  try {
+    const [rows] = await db.execute(
+      'SELECT * FROM account WHERE idCustomer = ?',
+      [request.params.id]
+    );
+    response.json(rows);
+  } catch (err) {
+    response.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/accounts/:id', async (request, response) => {
+  try {
+    const [result] = await db.execute(
+      'DELETE FROM account WHERE idAccount = ?',
+      [request.params.id]
+    );
+    response.json(result);
+  } catch (err) {
+    response.status(500).json({ error: err.message });
   }
 });
 
