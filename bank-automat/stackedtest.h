@@ -1,0 +1,40 @@
+#ifndef STACKEDTEST_H
+#define STACKEDTEST_H
+
+#include <QMainWindow>
+
+namespace Ui {
+class stackedTest;
+}
+
+class stackedTest : public QMainWindow
+{
+    Q_OBJECT
+    QMainWindow* mainWindow;
+
+public:
+    explicit stackedTest(QWidget *parent = nullptr, QMainWindow* mainPtr = nullptr);
+    ~stackedTest();
+
+private slots:
+
+    void on_balanceButton_clicked();
+
+    void on_backButtonBalance_clicked();
+
+    void on_backButtonDeposit_clicked();
+
+    void on_depostiButton_clicked();
+
+    void on_backButtonWithdraw_clicked();
+
+    void on_withdrawButton_clicked();
+
+    void on_depositMoney_clicked();
+
+    void on_signOutButton_clicked();
+
+private:
+    Ui::stackedTest *ui;
+};
+#endif // STACKEDTEST_H

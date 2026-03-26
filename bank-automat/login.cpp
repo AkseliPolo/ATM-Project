@@ -1,13 +1,13 @@
 #include "login.h"
 #include "ui_login.h"
 #include <QMessageBox>
-#include "actionMenu.h"
 #include "debitorcredit.h"
 
 
 logIn::logIn(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::logIn)
+        ,debitWindow(nullptr)
 {
     ui->setupUi(this);
     ui->passwordEdit->setMaxLength(4);
@@ -77,11 +77,11 @@ void logIn::on_enterButton_clicked()
     QString input = ui->passwordEdit->text();
 
     if (input == "1234") {
+        if (!debitWindow)
+            debitWindow = new debitOrCredit(this);  // parent = this
 
-        debitOrCredit *menu = new debitOrCredit();
-        menu->show();
-
-        this->close();
+        debitWindow->show();  // show the next window
+        this->hide();
         return;
     }
 

@@ -1,6 +1,7 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
+#include "debitorcredit.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -42,6 +43,7 @@ private slots:
 
 private:
     Ui::logIn *ui;
+    debitOrCredit *debitWindow;
     void setEditNum(int num);
     int yritykset = 3;
 };
