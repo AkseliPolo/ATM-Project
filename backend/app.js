@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const db = require('./database'); // huolehdi että polku on oikein
+const db = require('./database'); 
 
 const app = express();
 app.use(bodyParser.json());
@@ -36,6 +36,20 @@ app.get('/customers/:id', async (request, response) => {
       [request.params.id]
     );
     response.json(rows[0]);
+  } catch (err) {
+    response.status(500).json({ error: err.message });
+  }
+});
+
+app.patch('/customers/:id', async (request, response) => {
+  const { fname, lname } = request.body;
+
+  try {
+    const [result] = await db.execute(
+      'UPDATE customers SET fname = ?, lname = ? WHERE idCustomers = ?',
+      [fname ?? null, lname ?? null, request.params.id]
+    );
+    response.json(result);
   } catch (err) {
     response.status(500).json({ error: err.message });
   }
@@ -114,6 +128,43 @@ app.delete('/accounts/:id', async (request, response) => {
   }
 });
 
+//cards->
+
+app.post('/card', async (request, response) => {
+  const { idAccount, cardNumber, pin, credit_limit, credit_used, expiry_date, card_type } = request.body;
+
+  try {
+    const [result] = await db.execute(
+      `INSERT INTO card 
+      (idAccount, cardNumber, pin, credit_limit, credit_used, expiry_date, card_type)
+      VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [idAccount, cardNumber, pin, credit_limit ?? 0, credit_used ?? 0, expiry_date, card_type]
+    );
+    response.json({ id: result.insertId });
+  } catch (err) {
+    response.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/card', async (request, response) => {
+  try {
+    const [rows] = await db.execute('SELECT * FROM card');
+    response.json(rows);
+  } catch (err) {
+    response.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/card/:id', async (request, response) => {
+  try{
+    const [result] = await db.execute('DELETE FROM card WHERE idcard = ?', 
+    [request.params.id]
+  );
+    response.json(result);
+  } catch (err) {
+    response.status(500).json({error: err.message });
+  }
+});
 
 const PORT = 3000;
 app.listen(PORT, () => {
