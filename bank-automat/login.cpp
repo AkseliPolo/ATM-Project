@@ -7,10 +7,43 @@
 logIn::logIn(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::logIn)
-        ,debitWindow(nullptr)
+    , debitWindow(nullptr)
 {
     ui->setupUi(this);
     ui->passwordEdit->setMaxLength(4);
+
+    authService = new AuthService(this);
+
+    connect(authService, &AuthService::loginSuccess,
+            this, [this](QString token){
+
+                attemptsLeft = 3;
+
+                if (!debitWindow)
+                    debitWindow = new debitOrCredit(this);
+
+                debitWindow->show();
+                this->hide();
+            });
+
+    connect(authService, &AuthService::loginFailed,
+            this, [this](QString error){
+
+                attemptsLeft--;
+
+                if (attemptsLeft > 0) {
+                    QMessageBox::warning(this, "Login failed",
+                                         error + "\nAttempts left: " +
+                                             QString::number(attemptsLeft));
+
+                    ui->passwordEdit->clear();
+                } else {
+                    QMessageBox::critical(this, "Locked",
+                                          "Too many failed attempts!");
+
+                    QApplication::quit();
+                }
+            });
 }
 
 logIn::~logIn()
@@ -74,31 +107,15 @@ setEditNum(9);
 
 void logIn::on_enterButton_clicked()
 {
-    QString input = ui->passwordEdit->text();
+    QString card = ui->RFIDlineEdit->text();
+    QString pin = ui->passwordEdit->text();
 
-    if (input == "1234") {
-        if (!debitWindow)
-            debitWindow = new debitOrCredit(this);  // parent = this
-
-        debitWindow->show();  // show the next window
-        this->hide();
+    if (card.isEmpty() || pin.isEmpty()) {
+        QMessageBox::warning(this, "Error", "Enter card number and PIN");
         return;
     }
 
-    yritykset--;
-
-    if (yritykset > 0) {
-        QMessageBox::warning(this, "Virhe",
-                             "PIN väärin\n" +
-                                 QString::number(yritykset) +
-                                 " yritystä jäljellä.");
-
-        ui->passwordEdit->clear();
-    } else {
-        QMessageBox::critical(this, "Lukittu",
-                              "Liikaa virheellisiä yrityksiä!");
-        this->close();
-    }
+    authService->login(card, pin);
 }
 
 

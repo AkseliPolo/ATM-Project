@@ -19,11 +19,11 @@ debitOrCredit::~debitOrCredit()
 
 void debitOrCredit::on_pushButton_clicked() // debit
 {
-    if (!stackedWindow)                         // create only once
-        stackedWindow = new stackedTest(this);  // parent = this
+    if (!stackedWindow)
+        stackedWindow = new stackedTest(this);
 
-    stackedWindow->show();                      // show stackedTest window
-    this->hide();                               // hide debitOrCredit window
+    stackedWindow->show();
+    this->hide();
 }
 
 void debitOrCredit::on_pushButton_2_clicked() // credit
@@ -31,7 +31,6 @@ void debitOrCredit::on_pushButton_2_clicked() // credit
     if (!stackedWindow)
         stackedWindow = new stackedTest(this);
 
-    // optionally, you could switch stackedTest to a different page for "credit"
     stackedWindow->show();
     this->hide();
 }

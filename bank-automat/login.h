@@ -1,8 +1,11 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
+#include "AuthService.h"
 #include "debitorcredit.h"
 #include <QMainWindow>
+
+
 
 namespace Ui {
 class logIn;
@@ -45,7 +48,8 @@ private:
     Ui::logIn *ui;
     debitOrCredit *debitWindow;
     void setEditNum(int num);
-    int yritykset = 3;
+    int attemptsLeft = 3;
+    AuthService *authService;
 };
 
 

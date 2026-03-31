@@ -193,7 +193,7 @@
      <string>PIN</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="RFIDlineEdit">
     <property name="geometry">
      <rect>
       <x>260</x>
