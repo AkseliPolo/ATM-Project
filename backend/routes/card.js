@@ -19,4 +19,26 @@ router.post('/',function(request,response){
     });
 });
 
+router.get('/',function(request, response){
+    card.getAllCards(function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else{
+            response.json(result);
+        }
+    });
+});
+
+router.delete('/:id',function(request, response){
+    card.deleteCard(request.params.id, function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else{
+            response.json(result);
+        }
+    });
+});
+
 module.exports=router;
