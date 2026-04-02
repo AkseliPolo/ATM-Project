@@ -12,6 +12,22 @@ logIn::logIn(QWidget *parent)
     ui->setupUi(this);
     ui->passwordEdit->setMaxLength(4);
 
+    pReader = new Reader(this);
+    pReader->readInfo();
+
+    connect(pReader, &Reader::sendData,
+            this, [this](QByteArray data){
+                qDebug() << "RFID received:" << data;
+
+                QString card = QString::fromUtf8(data).trimmed();
+
+                card.remove(QRegularExpression("[^0-9]"));
+
+                ui->RFIDlineEdit->setText(card);
+            });
+
+    qDebug() << "Port opened:" << pReader->open();
+
     authService = new AuthService(this);
 
     connect(authService, &AuthService::loginSuccess,

@@ -10,7 +10,14 @@ void AuthService::login(const QString &cardNumber, const QString &pin)
 {
     qDebug() << "Login attempt:" << cardNumber << pin;
 
-    if(cardNumber == "1234" && pin == "0000")
+    const QStringList validCards = {
+        "06000374",
+        "0600064147"
+    };
+
+
+
+    if(validCards.contains(cardNumber) && pin == "0000")
     {
         qDebug() << "LOGIN SUCCESS";
         emit loginSuccess("fake_token_123");

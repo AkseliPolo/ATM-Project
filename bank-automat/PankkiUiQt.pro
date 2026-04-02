@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,6 +14,7 @@ SOURCES += \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
+    reader.cpp \
     stackedtest.cpp
 
 HEADERS += \
@@ -21,6 +22,7 @@ HEADERS += \
     debitorcredit.h \
     login.h \
     mainwindow.h \
+    reader.h \
     stackedtest.h
 
 FORMS += \
