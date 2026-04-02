@@ -13,17 +13,23 @@ add: function(stu, callback){
         }
         else{
             
-            return db.query("INSERT INTO card(idAccount, cardNumber, pin, expiry_date, card_type) VALUES(?,?,?,?,?)",[
-                stu.idAccount,
-                stu.cardNumber,
-                hashed,
-                stu.expiry_date,
-                stu.card_type
-            ],callback);
+           db.query("INSERT INTO card(idAccount, cardNumber, pin, expiry_date, card_type) VALUES(?,?,?,?,?)",[
+    stu.idAccount,
+    stu.cardNumber,
+    hashed,
+    stu.expiry_date,
+    stu.card_type
+])
+.then(result => callback(null, result)) 
+.catch(err => callback(err)); 
             
         }
         
     });
+},
+check_login: function(id, callback){
+return db.query("SELECT pin FROM card WHERE idAccount=?", [id],
+     callback)
 }
 }
 
