@@ -4,7 +4,7 @@
 #include "AuthService.h"
 #include "debitorcredit.h"
 #include <QMainWindow>
-
+#include "reader.h"
 
 
 namespace Ui {
@@ -50,6 +50,7 @@ private:
     void setEditNum(int num);
     int attemptsLeft = 3;
     AuthService *authService;
+    Reader *pReader;
 };
 
 
