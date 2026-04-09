@@ -71,4 +71,14 @@ router.delete('/:id',function(request, response){
     });
 });
 
+router.post('/cardTransaction', function(request, response){
+    transactions.cardTransaction(request.body, function(err, result){
+        if(err){
+            response.send(err);
+        } else {
+            response.json(result);
+        }
+    });
+});
+
 module.exports=router;

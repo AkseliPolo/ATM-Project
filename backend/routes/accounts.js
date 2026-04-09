@@ -37,6 +37,17 @@ router.get('/:id',function(request, response){
     });
 });
 
+router.get('/balance/:id',function(request, response){
+    accounts.getBalanceWithId(request.params.id, function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else{
+             response.json(result[0].balance); 
+        }
+    });
+});
+
 router.get('/customer/:customerId',function(request, response){
     accounts.getAccountWithCustomerId(request.params.customerId, function(err, result){
         if(err){

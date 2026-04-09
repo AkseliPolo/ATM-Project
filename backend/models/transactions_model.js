@@ -33,8 +33,23 @@ const transactions={
     },
     deleteTransactionWithId(id, callback){
         return db.query("DELETE FROM transaction Where idtransaction = ?",[id], callback);
+    },
+
+    cardTransaction(data, callback){
+        return db.query(
+            "CALL card_transaction(?, ?, ?)",
+            [
+                data.card_num,
+                data.trans_type,
+                data.amount
+            ],
+            callback
+        );
     }
+
 }
+
+
 
 
 module.exports=transactions;
