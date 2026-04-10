@@ -21,6 +21,13 @@ const card={
     deleteCard(id, callback){
         return db.query("DELETE FROM card WHERE idcard = ?",[id], callback);
     },
+     lockCard(cardNum, lock, callback){
+        return db.query("UPDATE card SET card_locked = ? WHERE cardNumber= ?",[
+            lock,
+            cardNum
+            
+        ], callback);
+    },
 add: function(stu, callback){
     if(!stu.pin){
         return callback("Pin puuttuu!");

@@ -17,9 +17,20 @@ const accounts={
         return db.query("SELECT * FROM account Where idAccount = ?",[id], callback);
     },
 
-    getBalanceWithId(id, callback){
-        return db.query("SELECT balance FROM account Where idAccount = ?",[id], callback);
-    },
+    // getBalanceWithId(id, callback){
+    //     return db.query("SELECT balance FROM account Where idAccount = ?",[id], callback);
+    // },
+
+    getBalanceWithCardNum(cardNumber, callback) {
+    return db.query(
+        `SELECT a.balance
+         FROM account a
+         JOIN card c ON c.idAccount = a.idAccount
+         WHERE c.cardNumber = ?`,
+        [cardNumber],
+        callback
+    );
+},
 
     getAccountWithCustomerId(id, callback){
         return db.query("SELECT * FROM account Where idCustomer = ?",[id], callback);

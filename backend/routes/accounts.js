@@ -38,7 +38,7 @@ router.get('/:id',function(request, response){
 });
 
 router.get('/balance/:id',function(request, response){
-    accounts.getBalanceWithId(request.params.id, function(err, result){
+    accounts.getBalanceWithCardNum(request.params.id, function(err, result){
         if(err){
             response.send(err);
         }

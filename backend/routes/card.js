@@ -42,4 +42,15 @@ router.delete('/:id',function(request, response){
     });
 });
 
+router.patch('/:cardNum/:lock',function(request, response){
+    card.lockCard(request.params.cardNum, request.params.lock,function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else{
+            response.json(result);
+        }
+    });
+});
+
 module.exports=router;
