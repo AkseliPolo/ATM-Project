@@ -1,11 +1,9 @@
 #include "authservice.h"
-#include "qjsonobject.h"
-#include <QDebug>
-#include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QDebug>
 
 AuthService::AuthService(QObject *parent)
     : QObject(parent)
@@ -13,13 +11,20 @@ AuthService::AuthService(QObject *parent)
     manager = new QNetworkAccessManager(this);
 }
 
+void AuthService::setCardNumber(const QString &card)
+{
+    this->cardNumber = card;
+}
+
+QString AuthService::getCardNumber() const
+{
+    return cardNumber;
+}
+
 void AuthService::login(const QString &cardNumber, const QString &pin)
 {
-    qDebug() << "Login attempt:" << cardNumber << pin;
-
     QUrl url("http://localhost:3000/login");
     QNetworkRequest request(url);
-
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
@@ -31,20 +36,26 @@ void AuthService::login(const QString &cardNumber, const QString &pin)
     connect(reply, &QNetworkReply::finished, this, [=]() {
 
         QByteArray response = reply->readAll();
+
+        QString clean = QString::fromUtf8(response);
+        clean.remove("\"");   // poistaa kaikki lainausmerkit
+
+        bool ok = false;
+        double balance = clean.toDouble(&ok);
+
         QJsonDocument doc = QJsonDocument::fromJson(response);
         QJsonObject obj = doc.object();
 
-        if(obj.contains("token"))
-        {
-            QString token = obj["token"].toString();
-            qDebug() << "LOGIN SUCCESS";
-            qDebug() << "TOKEN:" << token;
+        if (obj.contains("token")) {
 
-            emit loginSuccess(token);
-        }
-        else
-        {
-            qDebug() << "LOGIN FAILED:" << response;
+            this->token = obj["token"].toString();
+
+            qDebug() << "TOKEN STORED:" << this->token;
+
+            emit loginSuccess(this->token);
+
+
+        } else {
             emit loginFailed("Wrong card or PIN");
         }
 
@@ -52,3 +63,40 @@ void AuthService::login(const QString &cardNumber, const QString &pin)
     });
 }
 
+void AuthService::getBalanceByCard(const QString &cardNumber)
+{
+    QUrl url("http://localhost:3000/accounts/balance/" + cardNumber);
+    QNetworkRequest request(url);
+
+    request.setRawHeader(
+        "Authorization",
+        ("Bearer " + this->token).toUtf8()
+        );
+
+    QNetworkReply *reply = manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+
+        QByteArray response = reply->readAll();
+        qDebug() << "BALANCE RAW:" << response;
+
+        QString clean = QString::fromUtf8(response);
+
+        clean = clean.trimmed();
+        clean.remove("\"");
+
+        bool ok = false;
+        double balance = clean.toDouble(&ok);
+
+        if (!ok) {
+            qDebug() << "FAILED TO PARSE BALANCE:" << clean;
+            balance = 0;
+        }
+
+        qDebug() << "PARSED BALANCE:" << balance;
+
+        emit balanceReceived(balance);
+
+        reply->deleteLater();
+    });
+}

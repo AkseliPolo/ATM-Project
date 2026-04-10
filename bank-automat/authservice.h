@@ -1,8 +1,8 @@
 #ifndef AUTHSERVICE_H
 #define AUTHSERVICE_H
 
-#include "qnetworkaccessmanager.h"
 #include <QObject>
+#include <QNetworkAccessManager>
 
 class AuthService : public QObject
 {
@@ -12,13 +12,21 @@ public:
     explicit AuthService(QObject *parent = nullptr);
 
     void login(const QString &cardNumber, const QString &pin);
-
-private:
-    QNetworkAccessManager *manager;
+    void getBalance(int accountId);
+    void getBalanceByCard(const QString &cardNumber);
+    void setCardNumber(const QString &card);
+    QString getCardNumber() const;
 
 signals:
     void loginSuccess(QString token);
     void loginFailed(QString error);
+    void balanceReceived(double balance);
+
+private:
+    QNetworkAccessManager *manager;
+    QString token;
+    int accountId = -1;
+    QString cardNumber;
 };
 
-#endif // AUTHSERVICE_H
+#endif

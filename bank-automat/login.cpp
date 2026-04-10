@@ -9,6 +9,7 @@ logIn::logIn(QWidget *parent)
     , ui(new Ui::logIn)
     , debitWindow(nullptr)
 {
+    qDebug() << "LOGIN SERVICE:" << authService;
     ui->setupUi(this);
     ui->passwordEdit->setMaxLength(4);
 
@@ -24,6 +25,8 @@ logIn::logIn(QWidget *parent)
                 card.remove(QRegularExpression("[^0-9]"));
 
                 ui->RFIDlineEdit->setText(card);
+
+                authService->setCardNumber(card);
             });
 
     qDebug() << "Port opened:" << pReader->open();
@@ -33,10 +36,19 @@ logIn::logIn(QWidget *parent)
     connect(authService, &AuthService::loginSuccess,
             this, [this](QString token){
 
-                attemptsLeft = 3;
+                // decode JWT payload (middle part)
+                QString payload = token.split(".")[1];
+
+                QByteArray decoded = QByteArray::fromBase64(payload.toUtf8());
+
+                QJsonDocument doc = QJsonDocument::fromJson(decoded);
+                QJsonObject obj = doc.object();
+
+                int accountId = obj["cardNumber"].toString().toInt();
+                qDebug() << "ACCOUNT ID FROM TOKEN:" << accountId;
 
                 if (!debitWindow)
-                    debitWindow = new debitOrCredit(this);
+                    debitWindow = new debitOrCredit(this, this, authService);
 
                 debitWindow->show();
                 this->hide();
@@ -69,55 +81,55 @@ logIn::~logIn()
 
 void logIn::on_oneButton_clicked()
 {
-setEditNum(1);
+    setEditNum(1);
 }
 
 
 void logIn::on_twoButton_clicked()
 {
-setEditNum(2);
+    setEditNum(2);
 }
 
 
 void logIn::on_threeButton_clicked()
 {
-setEditNum(3);
+    setEditNum(3);
 }
 
 
 void logIn::on_fourButton_clicked()
 {
-setEditNum(4);
+    setEditNum(4);
 }
 
 
 void logIn::on_fiveButton_clicked()
 {
-setEditNum(5);
+    setEditNum(5);
 }
 
 
 void logIn::on_sixButton_clicked()
 {
-setEditNum(6);
+    setEditNum(6);
 }
 
 
 void logIn::on_sevenButton_clicked()
 {
-setEditNum(7);
+    setEditNum(7);
 }
 
 
 void logIn::on_eightButton_clicked()
 {
-setEditNum(8);
+    setEditNum(8);
 }
 
 
 void logIn::on_nineButton_clicked()
 {
-setEditNum(9);
+    setEditNum(9);
 }
 
 
@@ -137,13 +149,13 @@ void logIn::on_enterButton_clicked()
 
 void logIn::on_zeroButton_clicked()
 {
-setEditNum(0);
+    setEditNum(0);
 }
 
 
 void logIn::on_clearButton_clicked()
 {
-ui->passwordEdit->clear();
+    ui->passwordEdit->clear();
 }
 
 
