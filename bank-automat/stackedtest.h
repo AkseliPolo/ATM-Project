@@ -31,10 +31,13 @@ private slots:
     void on_depositMoney_clicked();
     void on_signOutButton_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::stackedTest *ui;
     QMainWindow *mainWindow;
     AuthService *authService;
+    QString card;
 };
 
 #endif // STACKEDTEST_H
