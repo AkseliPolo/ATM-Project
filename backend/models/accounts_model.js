@@ -34,6 +34,17 @@ const accounts={
     );
 },
 
+getAccountByCardNumber(cardNumber, callback) {
+    return db.query(
+        `SELECT a.idAccount
+         FROM account a
+         JOIN card c ON c.idAccount = a.idAccount
+         WHERE c.cardNumber = ?`,
+        [cardNumber],
+        callback
+    );
+},
+
     getAccountWithCustomerId(id, callback){
         return db.query("SELECT * FROM account Where idCustomer = ?",[id], callback);
     },

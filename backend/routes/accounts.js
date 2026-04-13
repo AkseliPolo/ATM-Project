@@ -37,6 +37,16 @@ router.get('/:id',function(request, response){
     });
 });
 
+router.get('/card/:cardNumber', function(request, response) {
+    accounts.getAccountByCardNumber(request.params.cardNumber, function(err, result) {
+        if (err) {
+            response.send(err);
+        } else {
+            response.send(String(result[0].idAccount));
+        }
+    });
+});
+
 router.get('/balanceId/:id',function(request, response){
     accounts.getBalanceWithId(request.params.id, function(err, result){
         if(err){
