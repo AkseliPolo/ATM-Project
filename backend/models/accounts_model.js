@@ -16,11 +16,13 @@ const accounts={
     getAccountWithId(id, callback){
         return db.query("SELECT * FROM account Where idAccount = ?",[id], callback);
     },
+    
 
-    // getBalanceWithId(id, callback){
-    //     return db.query("SELECT balance FROM account Where idAccount = ?",[id], callback);
-    // },
+      getBalanceWithId(id, callback){
+         return db.query("SELECT balance FROM account Where idAccount = ?",[id], callback);
+     },
 
+   
     getBalanceWithCardNum(cardNumber, callback) {
     return db.query(
         `SELECT a.balance

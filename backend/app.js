@@ -23,9 +23,11 @@ app.use('/transactions', transactionRouter);
 
 
 app.use('/login', loginRouter);
+app.use('/card', cardRouter);
+
 app.use(authenticateToken);
 
- app.use('/card', cardRouter);
+ 
 
 
 function authenticateToken(request, response, next) {
