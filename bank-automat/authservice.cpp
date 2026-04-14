@@ -1,4 +1,5 @@
 #include "authservice.h"
+#include "qjsonarray.h"
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QJsonDocument>
@@ -58,6 +59,37 @@ void AuthService::login(const QString &cardNumber, const QString &pin)
         } else {
             emit loginFailed("Wrong card or PIN");
         }
+
+        reply->deleteLater();
+    });
+}
+
+void AuthService::getTransactions(int accountId, int page)
+{
+    const int limit = 10;
+    int offset = (page - 1) * limit;
+
+    QUrl url("http://localhost:3000/transactions/account/" +
+             QString::number(accountId) +
+             "?limit=" + QString::number(limit) +
+             "&offset=" + QString::number(offset));
+
+    QNetworkRequest request(url);
+
+    request.setRawHeader("Authorization",
+                         ("Bearer " + this->token).toUtf8());
+
+    QNetworkReply *reply = manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+
+        QByteArray response = reply->readAll();
+
+        qDebug() << "TRANSACTION RESPONSE RAW:" << response;
+
+        QJsonDocument doc = QJsonDocument::fromJson(response);
+
+        emit transactionsReceived(doc.array());
 
         reply->deleteLater();
     });

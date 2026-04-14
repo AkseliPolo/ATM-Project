@@ -1,5 +1,6 @@
 const express=require('express');
 const transactions=require('../models/transactions_model');
+const transactionsModel = require("../models/transactions_model");
 
 const router=express.Router();
 
@@ -39,16 +40,26 @@ router.get('/:id',function(request, response){
     });
 });
 
-router.get('/account/:id',function(request, response){
-    transactions.getTransactionWithAccountId(request.params.id, function(err, result){
-        if(err){
-            response.send(err);
+router.get("/account/:id", (req, res) => {
+    const accountId = req.params.id;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
+
+    transactionsModel.getTransactionWithAccountIdPaged(
+        accountId,
+        limit,
+        offset,
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send(err);
+            }
+
+            res.json(result);
         }
-        else{
-            response.json(result);
-        }
-    });
+    );
 });
+
 router.put('/:id',function(request, response){
     transactions.updateTransactionWithId(request.params.id, request.body, function(err, result){
         if(err){

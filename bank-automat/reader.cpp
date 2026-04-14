@@ -39,7 +39,6 @@ void Reader::readInfo()
 
 bool Reader::open()
 {
-    // sarjanumero tarvitaan lopulliseen
     bool returnValue = false;
     port->setPortName("COM4");
     returnValue = port->open(QIODeviceBase::ReadOnly);
@@ -55,19 +54,9 @@ bool Reader::open()
 void Reader::handleInterrupt()
 {
     qDebug()<<"Luettavaa sarjaportissa";
-    //static QByteArray buffer;
     QByteArray luettu = port->readAll();
     qDebug()<<(QString::fromUtf8(luettu));
     emit sendData(luettu);
 
-
-
-    /*
-    buffer.append(luettu);
-    if(buffer.contains('\n'))
-    {
-        //qDebug()<<(QString::fromUtf8(buffer));
-        emit sendData(buffer);
-        buffer = "";
-    }*/
 }
+

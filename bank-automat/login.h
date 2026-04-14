@@ -1,25 +1,38 @@
 #ifndef LOGIN_H
+
 #define LOGIN_H
 
 #include "AuthService.h"
+
 #include "debitorcredit.h"
+
 #include <QMainWindow>
+
 #include "reader.h"
+
+#include <QTimer>
 
 
 namespace Ui {
+
 class logIn;
+
 }
 
 class logIn : public QMainWindow
+
 {
+
     Q_OBJECT
 
 public:
+
     explicit logIn(QWidget *parent = nullptr);
+
     ~logIn();
 
 private slots:
+
     void on_oneButton_clicked();
 
     void on_twoButton_clicked();
@@ -44,15 +57,25 @@ private slots:
 
     void on_clearButton_clicked();
 
-private:
-    Ui::logIn *ui;
-    debitOrCredit *debitWindow;
-    void setEditNum(int num);
-    int attemptsLeft = 3;
-    AuthService *authService;
-    Reader *pReader;
-};
+    void on_RFIDlineEdit_textChanged(const QString &arg1);
 
+private:
+
+    Ui::logIn *ui;
+
+    debitOrCredit *debitWindow;
+
+    void setEditNum(int num);
+
+    int attemptsLeft = 3;
+
+    AuthService *authService;
+
+    Reader *pReader;
+
+    QTimer *rfidTimer;
+
+};
 
 
 #endif // LOGIN_H

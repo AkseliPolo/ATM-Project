@@ -17,14 +17,14 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>0</y>
       <width>801</width>
       <height>561</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QPushButton" name="balanceButton">
@@ -130,6 +130,58 @@
        <string>Amount:</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="withdraw_20">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>280</y>
+        <width>80</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>20€</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="withdraw_40">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>280</y>
+        <width>80</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>40€</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="withdraw_50">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>310</y>
+        <width>80</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>50€</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="withdraw_100">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>310</y>
+        <width>80</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>100€</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_2">
      <widget class="QPushButton" name="backButtonBalance">
@@ -148,8 +200,8 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>180</y>
+        <x>230</x>
+        <y>120</y>
         <width>111</width>
         <height>31</height>
        </rect>
@@ -161,9 +213,9 @@
      <widget class="QLabel" name="balanceLabel">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>170</y>
-        <width>111</width>
+        <x>340</x>
+        <y>110</y>
+        <width>411</width>
         <height>51</height>
        </rect>
       </property>
@@ -182,11 +234,37 @@
      <widget class="QTableView" name="transactionTableView">
       <property name="geometry">
        <rect>
-        <x>225</x>
-        <y>221</y>
-        <width>351</width>
-        <height>241</height>
+        <x>180</x>
+        <y>170</y>
+        <width>431</width>
+        <height>331</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="prevPage">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>510</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Previous</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="nextPage">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>510</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Next</string>
       </property>
      </widget>
     </widget>
