@@ -24,6 +24,94 @@ QString AuthService::getCardNumber() const
 
 void AuthService::login(const QString &cardNumber, const QString &pin)
 {
+    QUrl lockUrl("http://localhost:3000/card/getCardLock/" + cardNumber);
+    QNetworkRequest lockRequest(lockUrl);
+
+
+    QNetworkReply *lockReply = manager->get(lockRequest);
+
+    connect(lockReply, &QNetworkReply::finished, this, [=]() {
+
+        QByteArray lockResponse = lockReply->readAll();
+        lockReply->deleteLater();
+
+        QString lockStr = QString::fromUtf8(lockResponse).trimmed();
+
+        bool ok = false;
+        int cardLocked = lockStr.toInt(&ok);
+
+        if (!ok) {
+            emit loginFailed("Failed to check card lock status");
+            return;
+        }
+
+
+        if (cardLocked == 0) {
+            proceedLogin(cardNumber, pin);
+            return;
+        }
+
+
+        QUrl timeUrl("http://localhost:3000/card/getCardLockTime/" + cardNumber);
+        QNetworkRequest timeRequest(timeUrl);
+
+        QNetworkReply *timeReply = manager->get(timeRequest);
+
+        connect(timeReply, &QNetworkReply::finished, this, [=]() {
+
+            QByteArray timeResponse = timeReply->readAll();
+            timeReply->deleteLater();
+
+            QString timeStr = QString::fromUtf8(timeResponse).trimmed();
+
+            // 🔥 POISTA JSON-lainausmerkit
+            timeStr.remove("\"");
+
+
+            qDebug() << "RAW TIME FROM BACKEND:" << timeStr;
+
+
+            QString cleanTime = timeStr.left(19);
+            qDebug() << "CLEAN TIME:" << timeStr;
+            QDateTime lockTime = QDateTime::fromString(
+                cleanTime,
+                "yyyy-MM-ddTHH:mm:ss"
+                );
+
+            if (!lockTime.isValid()) {
+                emit loginFailed("Invalid lock time format: " + timeStr);
+                return;
+            }
+
+            lockTime.setTimeSpec(Qt::UTC);
+
+            QDateTime now = QDateTime::currentDateTimeUtc();
+            qint64 secondsDiff = lockTime.secsTo(now);
+
+
+            if (secondsDiff >= 60) {
+
+                QUrl removeUrl("http://localhost:3000/card/" + cardNumber + "/removelock");
+                QNetworkRequest removeRequest(removeUrl);
+
+                QNetworkReply *removeReply = manager->put(removeRequest, QByteArray());
+
+                connect(removeReply, &QNetworkReply::finished, this, [=]() {
+
+                    removeReply->deleteLater();
+
+                    proceedLogin(cardNumber, pin);
+                });
+
+                return;
+            }
+            emit loginFailed("Card is locked");
+        });
+    });
+}
+
+void AuthService::proceedLogin(const QString &cardNumber, const QString &pin)
+{
     QUrl url("http://localhost:3000/login");
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -32,35 +120,26 @@ void AuthService::login(const QString &cardNumber, const QString &pin)
     json["cardNumber"] = cardNumber;
     json["pin"] = pin;
 
-    QNetworkReply *reply = manager->post(request, QJsonDocument(json).toJson());
+    QNetworkReply *reply = manager->post(
+        request,
+        QJsonDocument(json).toJson()
+        );
 
     connect(reply, &QNetworkReply::finished, this, [=]() {
 
         QByteArray response = reply->readAll();
-
-        QString clean = QString::fromUtf8(response);
-        clean.remove("\"");   // poistaa kaikki lainausmerkit
-
-        bool ok = false;
-        double balance = clean.toDouble(&ok);
+        reply->deleteLater();
 
         QJsonDocument doc = QJsonDocument::fromJson(response);
         QJsonObject obj = doc.object();
 
         if (obj.contains("token")) {
-
             this->token = obj["token"].toString();
-
             qDebug() << "TOKEN STORED:" << this->token;
-
             emit loginSuccess(this->token);
-
-
         } else {
             emit loginFailed("Wrong card or PIN");
         }
-
-        reply->deleteLater();
     });
 }
 

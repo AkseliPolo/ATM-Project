@@ -6,7 +6,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QDebug>
-
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include "stackedtest.h"
 
 logIn::logIn(QWidget *parent)
     : QMainWindow(parent)
@@ -16,27 +19,25 @@ logIn::logIn(QWidget *parent)
     ui->setupUi(this);
     ui->passwordEdit->setMaxLength(4);
 
-    // 🔧 AUTH
+
     authService = new AuthService(this);
 
-    // 🔧 TIMER
+
     rfidTimer = new QTimer(this);
     rfidTimer->setSingleShot(true);
-
 
 
     connect(rfidTimer, &QTimer::timeout, this, [this]() {
         qDebug() << "RFID timeout -> clearing field";
         ui->RFIDlineEdit->clear();
         ui->passwordEdit->clear();
+        MainWindow *w = new MainWindow();
+        w->show();
         rfidTimer->stop();
-       // MainWindow *w = new MainWindow();
-       // w->show();
-
-        //this->close(); // tai hide()
+        this->close(); // tai hide()
     });
 
-    // 🔧 YHTEINEN KÄSITTELY
+
     auto handleCardInput = [this](const QString &input){
         QString card = input.trimmed();
         card.remove(QRegularExpression("[^0-9]"));
@@ -45,7 +46,7 @@ logIn::logIn(QWidget *parent)
         authService->setCardNumber(card);
     };
 
-    // 🔧 RFID-LUKIJA
+
     pReader = new Reader(this);
     pReader->readInfo();
 
@@ -59,7 +60,7 @@ logIn::logIn(QWidget *parent)
 
     qDebug() << "Port opened:" << pReader->open();
 
-    // 🔧 KÄSIN SYÖTTÖ
+
     connect(ui->RFIDlineEdit, &QLineEdit::textChanged,
             this, [this, handleCardInput](const QString &text){
                 handleCardInput(text);
@@ -67,7 +68,7 @@ logIn::logIn(QWidget *parent)
                 rfidTimer->start(10000); // reset timer
             });
 
-    // 🔧 LOGIN SUCCESS
+
     connect(authService, &AuthService::loginSuccess,
             this, [this](QString token){
 
@@ -80,14 +81,14 @@ logIn::logIn(QWidget *parent)
                 int accountId = obj["cardNumber"].toString().toInt();
                 qDebug() << "ACCOUNT ID FROM TOKEN:" << accountId;
 
-                if (!debitWindow)
-                    debitWindow = new debitOrCredit(this, this, authService);
+                if (!stackedWindow)
+                    stackedWindow = new stackedTest(this, this, authService);
 
-                debitWindow->show();
+                stackedWindow->show();
                 this->hide();
-            });
+    });
 
-    // 🔧 LOGIN FAILED
+
     connect(authService, &AuthService::loginFailed,
             this, [this](QString error){
 
@@ -99,10 +100,33 @@ logIn::logIn(QWidget *parent)
                                              QString::number(attemptsLeft));
 
                     ui->passwordEdit->clear();
-                } else {
+                }
+                else {
+
                     QMessageBox::critical(this, "Locked",
-                                          "Too many failed attempts!");
-                    //QApplication::quit(); // kortin lukitukseen liittyvää
+                                          "Too many failed attempts! Card is locked for 60 seconds.");
+
+                    QString cardNum = ui->RFIDlineEdit->text();
+
+                    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+
+                    QUrl url("http://localhost:3000/card/" + cardNum + "/lock");
+                    QNetworkRequest request(url);
+
+                    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+                    QNetworkReply *reply = manager->sendCustomRequest(request, "PATCH");
+
+                    connect(reply, &QNetworkReply::finished, this, [reply]() {
+                        if (reply->error() == QNetworkReply::NoError) {
+                            qDebug() << "Card locked successfully:" << reply->readAll();
+                        } else {
+                            qDebug() << "Lock failed:" << reply->errorString();
+                        }
+                        reply->deleteLater();
+                    });
+
+
                 }
             });
 }
@@ -112,7 +136,6 @@ logIn::~logIn()
     delete ui;
 }
 
-// 🔢 NUMERONAPIT
 
 void logIn::on_oneButton_clicked()  { setEditNum(1); }
 void logIn::on_twoButton_clicked()  { setEditNum(2); }
@@ -125,7 +148,6 @@ void logIn::on_eightButton_clicked(){ setEditNum(8); }
 void logIn::on_nineButton_clicked() { setEditNum(9); }
 void logIn::on_zeroButton_clicked() { setEditNum(0); }
 
-// 🔘 ENTER
 
 void logIn::on_enterButton_clicked()
 {
@@ -142,14 +164,12 @@ void logIn::on_enterButton_clicked()
     authService->login(card, pin);
 }
 
-// 🧹 CLEAR
 
 void logIn::on_clearButton_clicked()
 {
     ui->passwordEdit->clear();
 }
 
-// 🔢 PIN LISÄYS
 
 void logIn::setEditNum(int num)
 {

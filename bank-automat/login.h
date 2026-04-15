@@ -12,6 +12,8 @@
 
 #include <QTimer>
 
+#include "stackedtest.h"
+
 
 namespace Ui {
 
@@ -74,6 +76,8 @@ private:
     Reader *pReader;
 
     QTimer *rfidTimer;
+
+    stackedTest *stackedWindow = nullptr;
 
 };
 

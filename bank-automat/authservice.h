@@ -31,6 +31,7 @@ private:
     int accountId = -1;
     QString cardNumber;
     int getAccountId() const;
+    void proceedLogin(const QString &cardNumber, const QString &pin);
 };
 
 #endif
