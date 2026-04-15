@@ -17,66 +17,116 @@
    <widget class="QPushButton" name="clearButton">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>310</y>
-      <width>91</width>
-      <height>31</height>
+      <x>240</x>
+      <y>370</y>
+      <width>60</width>
+      <height>49</height>
      </rect>
     </property>
     <property name="text">
-     <string>Clear</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumeroCLEAR.png</normaloff>:/images/images/pankkinumeroCLEAR.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="nineButton">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>270</y>
-      <width>91</width>
-      <height>31</height>
+      <x>400</x>
+      <y>310</y>
+      <width>60</width>
+      <height>49</height>
      </rect>
     </property>
     <property name="text">
-     <string>9</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero9.png</normaloff>:/images/images/pankkinumero9.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="zeroButton">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>310</y>
-      <width>91</width>
-      <height>31</height>
+      <x>320</x>
+      <y>370</y>
+      <width>60</width>
+      <height>49</height>
      </rect>
     </property>
     <property name="text">
-     <string>0</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero0.png</normaloff>:/images/images/pankkinumero0.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="sevenButton">
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>270</y>
-      <width>91</width>
-      <height>31</height>
+      <y>310</y>
+      <width>60</width>
+      <height>49</height>
      </rect>
     </property>
     <property name="text">
-     <string>7</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero7.png</normaloff>:/images/images/pankkinumero7.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="eightButton">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>270</y>
-      <width>91</width>
-      <height>31</height>
+      <x>320</x>
+      <y>310</y>
+      <width>60</width>
+      <height>49</height>
      </rect>
     </property>
     <property name="text">
-     <string>8</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero8.png</normaloff>:/images/images/pankkinumero8.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="oneButton">
@@ -84,90 +134,160 @@
      <rect>
       <x>240</x>
       <y>190</y>
-      <width>91</width>
-      <height>31</height>
+      <width>60</width>
+      <height>48</height>
      </rect>
     </property>
     <property name="text">
-     <string>1</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero1.png</normaloff>:/images/images/pankkinumero1.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="fiveButton">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>230</y>
-      <width>91</width>
-      <height>31</height>
+      <x>320</x>
+      <y>250</y>
+      <width>60</width>
+      <height>49</height>
      </rect>
     </property>
     <property name="text">
-     <string>5</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero5.png</normaloff>:/images/images/pankkinumero5.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="sixButton">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>230</y>
-      <width>91</width>
-      <height>31</height>
+      <x>400</x>
+      <y>250</y>
+      <width>60</width>
+      <height>49</height>
      </rect>
     </property>
     <property name="text">
-     <string>6</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero6.png</normaloff>:/images/images/pankkinumero6.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="twoButton">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>320</x>
       <y>190</y>
-      <width>91</width>
-      <height>31</height>
+      <width>60</width>
+      <height>48</height>
      </rect>
     </property>
     <property name="text">
-     <string>2</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero2.png</normaloff>:/images/images/pankkinumero2.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="enterButton">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>310</y>
-      <width>91</width>
-      <height>31</height>
+      <x>400</x>
+      <y>370</y>
+      <width>60</width>
+      <height>49</height>
      </rect>
     </property>
     <property name="text">
-     <string>Enter</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumeroenter.png</normaloff>:/images/images/pankkinumeroenter.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="threeButton">
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>400</x>
       <y>190</y>
-      <width>91</width>
-      <height>31</height>
+      <width>60</width>
+      <height>48</height>
      </rect>
     </property>
     <property name="text">
-     <string>3</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero3.png</normaloff>:/images/images/pankkinumero3.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="fourButton">
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>230</y>
-      <width>91</width>
-      <height>31</height>
+      <y>250</y>
+      <width>60</width>
+      <height>49</height>
      </rect>
     </property>
     <property name="text">
-     <string>4</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="images.qrc">
+      <normaloff>:/images/images/pankkinumero4.png</normaloff>:/images/images/pankkinumero4.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QLineEdit" name="passwordEdit">
@@ -235,6 +355,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
