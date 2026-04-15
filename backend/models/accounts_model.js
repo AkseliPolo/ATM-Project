@@ -1,5 +1,5 @@
 const db=require('../database');
-
+ 
 const accounts={
      add(newA, callback){
         return db.query("INSERT INTO account(idCustomer, balance, credit_limit, credit_used) VALUES(?,?,?,?)",
@@ -16,12 +16,12 @@ const accounts={
     getAccountWithId(id, callback){
         return db.query("SELECT * FROM account Where idAccount = ?",[id], callback);
     },
-    
-
+   
+ 
       getBalanceWithId(id, callback){
          return db.query("SELECT balance FROM account Where idAccount = ?",[id], callback);
      },
-
+ 
    
     getBalanceWithCardNum(cardNumber, callback) {
     return db.query(
@@ -33,7 +33,39 @@ const accounts={
         callback
     );
 },
-
+ 
+ getCredit_UsedWithCardNum(cardNumber, callback) {
+    return db.query(
+        `SELECT a.credit_used
+         FROM account a
+         JOIN card c ON c.idAccount = a.idAccount
+         WHERE c.cardNumber = ?`,
+        [cardNumber],
+        callback
+    );
+},
+ 
+ getCredit_LimitWithCardNum(cardNumber, callback) {
+    return db.query(
+        `SELECT a.credit_limit
+         FROM account a
+         JOIN card c ON c.idAccount = a.idAccount
+         WHERE c.cardNumber = ?`,
+        [cardNumber],
+        callback
+    );
+},
+ 
+getCard_TypeWithCardNum(cardNumber, callback) {
+    return db.query(
+        `SELECT card_type
+         FROM card
+         WHERE cardNumber = ?`,
+        [cardNumber],
+        callback
+    );
+},
+ 
 getAccountByCardNumber(cardNumber, callback) {
     return db.query(
         `SELECT a.idAccount
@@ -44,11 +76,11 @@ getAccountByCardNumber(cardNumber, callback) {
         callback
     );
 },
-
+ 
     getAccountWithCustomerId(id, callback){
         return db.query("SELECT * FROM account Where idCustomer = ?",[id], callback);
     },
-
+ 
     updateAccountWithId(id, newA, callback){
         return db.query("UPDATE customers SET idCustomer = ?, balance = ?, credit_limit = ?, credit_used = ? WHERE idCustomers = ?", [
             newA.idCustomer,
@@ -62,5 +94,6 @@ getAccountByCardNumber(cardNumber, callback) {
         return db.query("DELETE FROM account Where idAccount = ?",[id], callback);
     }
 }
-
+ 
 module.exports=accounts;
+ 
