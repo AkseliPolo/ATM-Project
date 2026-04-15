@@ -1,37 +1,42 @@
 #include "debitorcredit.h"
 #include "stackedtest.h"
 #include "ui_debitorcredit.h"
-
-debitOrCredit::debitOrCredit(QWidget *parent, logIn* loginPtr)
+#include "login.h"
+debitOrCredit::debitOrCredit(QWidget *parent,
+                             logIn* loginPtr,
+                             AuthService *service)
     : QMainWindow(parent),
     ui(new Ui::debitOrCredit),
-    stackedWindow(nullptr)  // initialize pointer
-    , loginWindow(loginPtr)
+    stackedWindow(nullptr),
+    loginWindow(loginPtr),
+    authService(service)
 {
     ui->setupUi(this);
+    qDebug() << "DEBIT SERVICE:" << authService;
 }
 
 debitOrCredit::~debitOrCredit()
 {
-    delete stackedWindow;  // clean up
+    delete stackedWindow;
     delete ui;
 }
 
 void debitOrCredit::on_pushButton_clicked() // debit
 {
-    if (!stackedWindow)                         // create only once
-        stackedWindow = new stackedTest(this);  // parent = this
+    qDebug() << "AUTH IN DEBITORCREDIT:" << authService;
 
-    stackedWindow->show();                      // show stackedTest window
-    this->hide();                               // hide debitOrCredit window
+    if (!stackedWindow)
+        stackedWindow = new stackedTest(this, static_cast<QMainWindow*>(loginWindow), authService);
+
+    stackedWindow->show();
+    this->hide();
 }
 
 void debitOrCredit::on_pushButton_2_clicked() // credit
 {
     if (!stackedWindow)
-        stackedWindow = new stackedTest(this);
+        stackedWindow = new stackedTest(this, static_cast<QMainWindow*>(loginWindow), authService);
 
-    // optionally, you could switch stackedTest to a different page for "credit"
     stackedWindow->show();
     this->hide();
 }

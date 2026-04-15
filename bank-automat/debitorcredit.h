@@ -1,9 +1,11 @@
 #ifndef DEBITORCREDIT_H
 #define DEBITORCREDIT_H
 
+#include "AuthService.h"
 #include <QMainWindow>
-class logIn;       // forward declaration
-class stackedTest; // forward declaration
+
+class logIn;
+class stackedTest;
 
 namespace Ui {
 class debitOrCredit;
@@ -14,7 +16,9 @@ class debitOrCredit : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit debitOrCredit(QWidget *parent = nullptr, logIn* loginPtr = nullptr);
+    explicit debitOrCredit(QWidget *parent = nullptr,
+                           logIn* loginPtr = nullptr,
+                           AuthService *service = nullptr);
     ~debitOrCredit();
 
 private slots:
@@ -24,7 +28,8 @@ private slots:
 private:
     Ui::debitOrCredit *ui;
     stackedTest *stackedWindow;
-    logIn* loginWindow;  // must be declared here
+    logIn* loginWindow;
+    AuthService *authService;
 };
 
 #endif // DEBITORCREDIT_H
