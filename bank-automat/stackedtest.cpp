@@ -227,6 +227,12 @@ void stackedTest::on_depositMoney_clicked()
 
     resetInactivity();
 
+    ui->showDepositLabel->setText("Deposit Successful!");
+
+    QTimer::singleShot(3000, this, [this]() {
+        ui->showDepositLabel->clear();
+    });
+
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 
     // URL Node.js backendiin
@@ -283,6 +289,12 @@ void stackedTest::on_pushButton_clicked() // withdraw nappi
 
 {
     resetInactivity();
+
+    ui->withdrawShowLabel->setText("Withdraw Successful!");
+
+    QTimer::singleShot(3000, this, [this]() {
+        ui->withdrawShowLabel->clear();
+    });
 
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 

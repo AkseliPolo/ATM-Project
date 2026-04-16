@@ -12,5 +12,7 @@
         <file>images/pankkinumero9.png</file>
         <file>images/pankkinumeroCLEAR.png</file>
         <file>images/pankkinumeroenter.png</file>
+        <file>images/login.png</file>
+        <file>images/BlueBackground.png</file>
     </qresource>
 </RCC>
