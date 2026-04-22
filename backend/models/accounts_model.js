@@ -2,12 +2,13 @@ const db=require('../database');
  
 const accounts={
      add(newA, callback){
-        return db.query("INSERT INTO account(idCustomer, balance, credit_limit, credit_used) VALUES(?,?,?,?)",
+        return db.query("INSERT INTO account(idCustomer, balance, credit_limit, credit_used, account_type) VALUES(?,?,?,?,?)",
         [
             newA.idCustomer,
             newA.balance,
             newA.credit_limit,
-            newA.credit_used
+            newA.credit_used,
+            newA.account_type
         ], callback);
     },
       getAllAccounts(callback){

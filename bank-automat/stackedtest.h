@@ -42,6 +42,7 @@ private slots:
     void on_withdraw_100_clicked();
     void logout();
     void resetInactivity();
+    void getCardType();
 
 private:
     Ui::stackedTest *ui;
@@ -52,6 +53,10 @@ private:
     int currentPage = 1;
     int accountId = -1;
     QTimer *inactivityTimer;
+    QString token;
+    double creditLimit = 0.0;
+    double creditUsed = 0.0;
+    QString cardType;
 };
 
 #endif // STACKEDTEST_H

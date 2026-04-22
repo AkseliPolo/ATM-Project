@@ -84,6 +84,17 @@ router.patch('/:cardNum/removelock',function(request, response){
         }
     });
 });
+
+router.get('/getCardType/:cardNum',function(request, response){
+    card.getCardTypeWithCardNum(request.params.cardNum, function(err, result){
+        if(err){
+            response.send(err);
+        }
+        else{
+            response.send(String(result[0].card_type));
+        }
+    });
+});
  
 module.exports=router;
  

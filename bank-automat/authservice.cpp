@@ -22,6 +22,116 @@ QString AuthService::getCardNumber() const
     return cardNumber;
 }
 
+void AuthService::getCreditLimitByCard(const QString &cardNumber)
+
+{
+
+    QUrl url("http://localhost:3000/accounts/credit_limit/" + cardNumber);
+
+    QNetworkRequest request(url);
+
+    request.setRawHeader(
+
+        "Authorization",
+
+        ("Bearer " + this->token).toUtf8()
+
+        );
+
+    QNetworkReply *reply = manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+
+        QByteArray response = reply->readAll();
+
+        qDebug() << "CREDIT LIMIT RAW:" << response;
+
+        QString clean = QString::fromUtf8(response);
+
+        clean = clean.trimmed();
+
+        clean.remove("\"");
+
+        bool ok = false;
+
+        double limit = clean.toDouble(&ok);
+
+        if (!ok) {
+
+            qDebug() << "FAILED TO PARSE CREDIT LIMIT:" << clean;
+
+            limit = 0;
+
+        }
+
+        qDebug() << "PARSED CREDIT LIMIT:" << limit;
+
+        emit creditLimitReceived(limit);
+
+        reply->deleteLater();
+
+    });
+
+}
+
+void AuthService::getCreditUsedByCard(const QString &cardNumber)
+
+{
+
+    QUrl url("http://localhost:3000/accounts/credit_used/" + cardNumber);
+
+    QNetworkRequest request(url);
+
+    request.setRawHeader(
+
+        "Authorization",
+
+        ("Bearer " + this->token).toUtf8()
+
+        );
+
+    QNetworkReply *reply = manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [=]() {
+
+        QByteArray response = reply->readAll();
+
+        qDebug() << "CREDIT USED RAW:" << response;
+
+        QString clean = QString::fromUtf8(response);
+
+        clean = clean.trimmed();
+
+        clean.remove("\"");
+
+        bool ok = false;
+
+        double used = clean.toDouble(&ok);
+
+        if (!ok) {
+
+            qDebug() << "FAILED TO PARSE CREDIT USED:" << clean;
+
+            used = 0;
+
+        }
+
+        qDebug() << "PARSED CREDIT USED:" << used;
+
+        emit creditUsedReceived(used);
+
+        reply->deleteLater();
+
+    });
+
+}
+
+
+QString AuthService::getToken() const
+{
+    return token;
+}
+
 void AuthService::login(const QString &cardNumber, const QString &pin)
 {
     QUrl lockUrl("http://localhost:3000/card/getCardLock/" + cardNumber);
@@ -64,7 +174,6 @@ void AuthService::login(const QString &cardNumber, const QString &pin)
 
             QString timeStr = QString::fromUtf8(timeResponse).trimmed();
 
-            // 🔥 POISTA JSON-lainausmerkit
             timeStr.remove("\"");
 
 

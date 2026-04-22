@@ -40,6 +40,26 @@ stackedTest::stackedTest(QWidget *parent,
         logout();
     });
 
+    connect(authService, &AuthService::creditLimitReceived,
+            this, [this](double limit){
+
+                creditLimit = limit;
+
+                ui->creditlimit_label->setText(
+                    QString::number(limit, 'f', 2) + " €"
+                    );
+            });
+
+    connect(authService, &AuthService::creditUsedReceived,
+            this, [this](double used){
+
+                creditUsed = used;
+
+                ui->creditused_label->setText(
+                    QString::number(used, 'f', 2) + " €"
+                    );
+            });
+
     connect(authService, &AuthService::transactionsReceived,
             this, [this](QJsonArray arr){
 
@@ -71,17 +91,8 @@ stackedTest::stackedTest(QWidget *parent,
                 }
     });
 
-    qDebug() << "STACKED SERVICE:" << authService;
-
     ui->stackedWidget->setCurrentIndex(0);
 
-    qDebug() << "STACKED AUTH SERVICE RECEIVED:" << authService;
-
-    qDebug() << "STACKED TEST CREATED";
-
-    qDebug() << "AuthService pointer:" << authService;
-
-    // Balance signal connection
 
     connect(authService, &AuthService::balanceReceived,
 
@@ -92,13 +103,64 @@ stackedTest::stackedTest(QWidget *parent,
                 ui->balanceLabel->setText(QString::number(balance, 'f', 2) + " €");
 
             });
-
 }
+void stackedTest::getCardType()
+{
+    qDebug() << "getCardType called";
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+
+    QString urlString = "http://localhost:3000/card/getCardType/" + card;
+    QUrl url(urlString);
+
+    QNetworkRequest request(url);
+
+    request.setRawHeader("Authorization", ("Bearer " + authService->getToken()).toUtf8());
+
+    QNetworkReply *reply = manager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+
+        if (reply->error() == QNetworkReply::NoError) {
+
+            QByteArray response_data = reply->readAll();
+            QString cardType = QString::fromUtf8(response_data).trimmed();
+
+            ui->cardTypeLabel->setText(cardType);
+
+            qDebug() << "Card type:" << cardType;
+
+            if (cardType == "debit") {
+
+                ui->label_9->hide();
+                ui->label_8->hide();
+                ui->creditlimit_label->hide();
+                ui->creditused_label->hide();
+
+            } else {
+
+                ui->label_9->show();
+                ui->label_8->show();
+                ui->creditlimit_label->show();
+                ui->creditused_label->show();
+            }
+
+        } else {
+            qDebug() << "Error:" << reply->error();
+            qDebug() << "Error string:" << reply->errorString();
+            qDebug() << "Response (if any):" << reply->readAll();
+            ui->cardTypeLabel->setText("Error");
+        }
+
+
+        reply->deleteLater();
+    });
+}
+
 
 void stackedTest::resetInactivity()
 {
     if (inactivityTimer) {
-        inactivityTimer->start(); // restart 30s countdown
+        inactivityTimer->start();
     }
 }
 
@@ -106,7 +168,6 @@ void stackedTest::logout()
 {
     qDebug() << "AUTO LOGOUT (inactivity)";
 
-    // tyhjennä login kentät
     logIn *login = qobject_cast<logIn*>(mainWindow);
     if (login) {
         login->findChild<QLineEdit*>("RFIDlineEdit")->clear();
@@ -140,12 +201,16 @@ void stackedTest::on_balanceButton_clicked()
 
     card = authService->getCardNumber();
 
+    getCardType();
+
     qDebug() << "CARD USED:" << card;
     resetInactivity();
 
     if (authService && !card.isEmpty()) {
 
         authService->getBalanceByCard(card);
+        authService->getCreditLimitByCard(card);
+        authService->getCreditUsedByCard(card);
 
         QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 
@@ -235,9 +300,8 @@ void stackedTest::on_depositMoney_clicked()
 
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 
-    // URL Node.js backendiin
 
-    QUrl url("http://localhost:3000/transactions/cardTransaction"); // muuta portti tarvittaessa
+    QUrl url("http://localhost:3000/transactions/cardTransaction");
 
     QNetworkRequest request(url);
 
@@ -245,25 +309,21 @@ void stackedTest::on_depositMoney_clicked()
 
     double value = ui->lineEdit->text().toDouble();
 
-    // 🔹 JSON data (sama kuin Postmanissa)
 
     QJsonObject json;
 
-    json["card_num"] = card;       // hae tämä vaikka UI:sta
+    json["card_num"] = card;
 
     json["trans_type"] = "deposit";
 
-    json["amount"] = value;          // hae tämä UI:sta
+    json["amount"] = value;
 
     QJsonDocument doc(json);
 
     QByteArray data = doc.toJson();
 
-    // 🔹 Lähetetään POST request
 
     QNetworkReply *reply = manager->post(request, data);
-
-    // 🔹 Vastauksen käsittely
 
     connect(reply, &QNetworkReply::finished, [reply]() {
 
@@ -290,15 +350,32 @@ void stackedTest::on_pushButton_clicked() // withdraw nappi
 {
     resetInactivity();
 
-    ui->withdrawShowLabel->setText("Withdraw Successful!");
+    bool ok;
+    int raha = ui->lineEdit_2->text().toInt(&ok);
+
+    double balance = ui->balanceLabel->text()
+                         .split(" ").first()   // 123.45 € -> "123.45"
+                         .toDouble();
+
+    if (!ok || raha < 20 || raha % 10 != 0 ||
+        (cardType == "debit" && raha > balance)) {
+
+        ui->withdrawShowLabel->setText("Withdraw failed.");
+
+        QTimer::singleShot(3000, this, [this]() {
+            ui->withdrawShowLabel->clear();
+        });
+
+        return;
+    }
+
+    ui->withdrawShowLabel->setText("Withdraw successful!");
 
     QTimer::singleShot(3000, this, [this]() {
         ui->withdrawShowLabel->clear();
     });
 
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-
-    // URL Node.js backendiin
 
     QUrl url("http://localhost:3000/transactions/cardTransaction"); // muuta portti tarvittaessa
 
@@ -308,25 +385,21 @@ void stackedTest::on_pushButton_clicked() // withdraw nappi
 
     double value = ui->lineEdit_2->text().toDouble();
 
-    // 🔹 JSON data (sama kuin Postmanissa)
 
     QJsonObject json;
 
-    json["card_num"] = card;       // hae tämä vaikka UI:sta
+    json["card_num"] = card;
 
     json["trans_type"] = "withdraw";
 
-    json["amount"] = value;          // hae tämä UI:sta
+    json["amount"] = value;
 
     QJsonDocument doc(json);
 
     QByteArray data = doc.toJson();
 
-    // 🔹 Lähetetään POST request
-
     QNetworkReply *reply = manager->post(request, data);
 
-    // 🔹 Vastauksen käsittely
 
     connect(reply, &QNetworkReply::finished, [reply]() {
 
@@ -353,8 +426,6 @@ void stackedTest::on_signOutButton_clicked()
 {
 
     resetInactivity();
-
-    qDebug() << "Sign out clicked";
 
     logIn *login = qobject_cast<logIn*>(mainWindow);
 

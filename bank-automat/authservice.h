@@ -18,12 +18,17 @@ public:
     void setCardNumber(const QString &card);
     void getTransactions(int accountId, int page);
     QString getCardNumber() const;
+    QString getToken() const;
+    void getCreditLimitByCard(const QString &cardNumber);
+    void getCreditUsedByCard(const QString &cardNumber);
 
 signals:
     void loginSuccess(QString token);
     void loginFailed(QString error);
     void balanceReceived(double balance);
     void transactionsReceived(const QJsonArray transactions);
+    void creditLimitReceived(double limit);
+    void creditUsedReceived(double used);
 
 private:
     QNetworkAccessManager *manager;

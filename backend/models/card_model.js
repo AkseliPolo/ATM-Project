@@ -48,6 +48,13 @@ const card={
            
         ], callback);
     },
+    
+     getCardTypeWithCardNum(cardNum, callback){
+        return db.query("SELECT card_type FROM card WHERE cardNumber = ?",[
+            cardNum
+           
+        ], callback);
+    },
 add: function(stu, callback){
     if(!stu.pin){
         return callback("Pin puuttuu!");

@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QPushButton" name="balanceButton">
@@ -266,7 +266,7 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>230</x>
+        <x>160</x>
         <y>120</y>
         <width>111</width>
         <height>31</height>
@@ -279,7 +279,7 @@
      <widget class="QLabel" name="balanceLabel">
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>310</x>
         <y>110</y>
         <width>411</width>
         <height>51</height>
@@ -352,6 +352,114 @@
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="cardTypeLabel">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>40</y>
+        <width>141</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>18</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="cardTypeLabel_2">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>40</y>
+        <width>141</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>18</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Card type:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="creditused_label">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>80</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="creditlimit_label">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>40</y>
+        <width>151</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>70</y>
+        <width>181</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Credit Used:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>40</y>
+        <width>131</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Credit Limit:</string>
+      </property>
+     </widget>
      <zorder>label_5</zorder>
      <zorder>backButtonBalance</zorder>
      <zorder>label</zorder>
@@ -359,6 +467,12 @@
      <zorder>transactionTableView</zorder>
      <zorder>prevPage</zorder>
      <zorder>nextPage</zorder>
+     <zorder>cardTypeLabel</zorder>
+     <zorder>cardTypeLabel_2</zorder>
+     <zorder>creditused_label</zorder>
+     <zorder>creditlimit_label</zorder>
+     <zorder>label_8</zorder>
+     <zorder>label_9</zorder>
     </widget>
     <widget class="QWidget" name="page_3">
      <widget class="QPushButton" name="backButtonDeposit">
