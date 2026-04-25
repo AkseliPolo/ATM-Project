@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/pankkinumero0.png</file>
+        <file>images/pankkinumero1.png</file>
+        <file>images/pankkinumero2.png</file>
+        <file>images/pankkinumero3.png</file>
+        <file>images/pankkinumero4.png</file>
+        <file>images/pankkinumero5.png</file>
+        <file>images/pankkinumero6.png</file>
+        <file>images/pankkinumero7.png</file>
+        <file>images/pankkinumero8.png</file>
+        <file>images/pankkinumero9.png</file>
+        <file>images/pankkinumeroCLEAR.png</file>
+        <file>images/pankkinumeroenter.png</file>
+        <file>images/login.png</file>
+        <file>images/BlueBackground.png</file>
+    </qresource>
+</RCC>
